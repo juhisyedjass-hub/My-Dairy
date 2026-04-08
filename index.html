@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Romantic Diary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #1f1f3a, #0f172a 70%);
+            color: #fff;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 1000;
+        }
+
+        nav h2 {
+            color: #ff9ecf;
+            text-shadow: 0 0 15px #ff4da6;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav ul li {
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        nav ul li:hover,
+        .active {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px #ff4da6;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 25px rgba(255, 77, 166, 0.2);
+        }
+
+        h3 {
+            color: #ffb3d9;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            border-radius: 15px;
+            border: none;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            background: linear-gradient(45deg, #ff4da6, #ff9ecf);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            box-shadow: 0 0 25px #ff4da6;
+            transform: scale(1.06);
+        }
+
+        .entry {
+            margin-top: 15px;
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.07);
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            /* 🔥 layout fix */
+            flex-direction: column;
+            /* text upar, icons neeche */
+        }
+
+        .entry .text {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            /* 🔥 add */
+        }
+
+        .entry:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 30px rgba(255, 77, 166, 0.6);
+        }
+
+        .entry .actions {
+            position: static;
+            /* 🔥 fix */
+            margin-top: 10px;
+            /* thoda gap */
+            display: flex;
+            gap: 10px;
+        }
+
+        .entry .actions {
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .edit {
+            background: linear-gradient(45deg, #6c63ff, #9a8cff);
+        }
+
+        .delete {
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+        }
+
+        .fav {
+            background: linear-gradient(45deg, #ff4da6, #ff9ecf);
+        }
+
+        .date {
+            font-size: 12px;
+            color: #bbb;
+            margin-bottom: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        nav {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        .entry .actions {
+            gap: 12px;
+        }
+
+        textarea {
+            background: #fff;
+        }
+
+        /* 🔥 LEFT GAP FIX */
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+        /* 🔥 FULL WIDTH FIX */
+        body {
+            width: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 🔥 NAV FIX */
+        nav {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 🔥 CONTAINER FIX */
+        .container {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* MOBILE RESPONSIVE + NAVBAR */
+        @media(max-width:768px) {
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: #fff;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 25px;
+                transition: 0.4s ease;
+                z-index: 9999;
+            }
+
+            nav ul.show {
+                left: 0;
+            }
+
+            nav ul li {
+                font-size: 20px;
+                padding: 12px 20px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            textarea {
+                height: 110px;
+            }
+
+            .entry {
+                padding: 16px;
+            }
+
+            .entry .actions {
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+
+        @media(max-width:480px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            nav ul li {
+                font-size: 16px;
+            }
+        }
+
+        .entry img:hover {
+            transform: scale(1.1);
+            transition: 0.3s;
+        }
+
+        /* 🔥 INPUT ROW */
+        .input-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* 🔥 COMMON BOX STYLE */
+        .mood-box,
+        .img-box {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 🔥 LABEL */
+        .mood-box label,
+        .img-box label {
+            font-size: 13px;
+            color: #ffb3d9;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* 🔥 SELECT */
+        #mood {
+            width: 100%;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        /* 🔥 FILE INPUT */
+        #imgInput {
+            width: 100%;
+            padding: 6px;
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        /* 🔥 HOVER EFFECT */
+        .mood-box:hover,
+        .img-box:hover {
+            box-shadow: 0 0 15px #ff4da6;
+        }
+
+        .img-box button {
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(45deg, #ff4da6, #ff9ecf);
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .img-box button:hover {
+            box-shadow: 0 0 10px #ff4da6;
+        }
+
+        #editImgPreview {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        #writeCard.editing {
+            box-shadow: 0 0 30px #6c63ff;
+        }
+        /* 🔥 ENTRY MOBILE FIX */
+@media(max-width:500px){
+    .entry div[style*="display:flex"]{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .entry img{
+        margin-bottom:8px;
+    }
+}
+.nav-icons{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.nav-icons i{
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* MOBILE FIX */
+@media(max-width:768px){
+    .nav-icons{
+        position:absolute;
+        right:20px;
+        top:20px;
+    }
+}
+.entry .text {
+    word-break: break-word;
+}
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2>💖 My Diary</h2>
+        <div class="nav-icons">
+        <i class="fa-solid fa-layer-group" onclick="toggleRooms()"></i>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </div>
+       
+
+        <ul id="navMenu">
+            <li onclick="setFilter('all',this)" class="active">Home</li>
+            <li onclick="setFilter('thought',this)">Thoughts</li>
+            <li onclick="setFilter('memory',this)">Memories</li>
+            <li onclick="setFilter('love',this)">Love</li>
+            <li onclick="setFilter('fav',this)">Favorites</li>
+        </ul>
+    </nav>
+    <div style="text-align:center; margin-top:10px;">
+        <input id="roomCode" placeholder="Enter Room Code 💖"
+            style="padding:8px 15px;border-radius:20px;border:none;outline:none;">
+        <button onclick="joinRoom()">Join</button>
+    </div>
+
+    <div class="container">
+
+        <div class="card" id="writeCard">
+            <h3 id="writeTitle">✨ Write Your Thoughts</h3>
+            <div class="input-row">
+                <div class="mood-box">
+                    <label>💭 Mood</label>
+                    <select id="mood">
+                        <option value="😊">😊 Happy</option>
+                        <option value="😢">😢 Sad</option>
+                        <option value="😡">😡 Angry</option>
+                    </select>
+                </div>
+
+                <div class="img-box">
+                    <label>📸 Add Image</label>
+
+                    <input type="file" id="imgInput" hidden>
+
+                    <button type="button" onclick="document.getElementById('imgInput').click()">
+                        Choose Image
+                    </button>
+
+                    <span id="fileName" style="font-size:12px;color:#ccc;margin-left:5px;">
+                        No file chosen
+                    </span>
+                </div>
+            </div>
+            <textarea id="thought"></textarea>
+            <button onclick="saveEntry()">Save 💖</button>
+            <button id="cancelBtn" onclick="cancelEdit()" style="display:none;background:#555;margin-left:10px;">
+                Cancel ❌
+            </button>
+        </div>
+        <div id="editImgPreview" style="margin-top:10px;display:none;">
+            <img id="previewImg" style="width:70px;height:70px;border-radius:50%;object-fit:cover;">
+
+            <br>
+
+            <button onclick="removeImage()" style="
+margin-top:6px;
+padding:4px 10px;
+font-size:12px;
+border-radius:8px;
+background:#ff4d6d;
+color:white;
+border:none;
+cursor:pointer;
+">
+                Remove
+            </button>
+        </div>
+        <div class="card">
+            <h3 id="sectionTitle">All Entries ✨</h3>
+            <div id="entries"></div>
+        </div>
+
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        let rooms = JSON.parse(localStorage.getItem("rooms")) || [];
+        let currentFilter = 'all';
+        let editIndex = null;
+        let currentImage = null;
+        // 🔔 Notification Permission
+        let currentEditImg = null;
+
+        // 🔥 GLOBAL WRITE TITLES (FIX)
+        const writeTitles = {
+            all: '✨ Write Your Thoughts',
+            thought: '✍️ Write a Thought',
+            memory: '🌸 Capture a Memory',
+            love: '💌 Write a Love Note'
+        };
+
+        // 🔥 Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBImccm0tq_7zJCijNTouziAaB54acPAdU",
+            authDomain: "personal-dairy-30faf.firebaseapp.com",
+            databaseURL: "https://personal-dairy-30faf-default-rtdb.firebaseio.com",
+            projectId: "personal-dairy-30faf",
+            storageBucket: "personal-dairy-30faf.firebasestorage.app",
+            messagingSenderId: "399557615110",
+            appId: "1:399557615110:web:1bc6bff674a59d275a2d87"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+        // 🔥 ROOM
+        let room = "default";
+        function joinRoom() {
+            let code = document.getElementById("roomCode").value.trim();
+            if (!code) return alert("Enter room code");
+
+            room = code;
+            if (!rooms.includes(code)) {
+                rooms.push(code);
+                localStorage.setItem("rooms", JSON.stringify(rooms));
+                loadRooms();
+            }
+            document.getElementById("roomCode").value = "";
+
+            displayEntries();
+        }
+
+        // 🔥 CATEGORY
+        function getCurrentCategory() {
+            if (currentFilter === 'thought' || currentFilter === 'memory' || currentFilter === 'love') {
+                return currentFilter;
+            }
+            return 'thought';
+        }
+
+        // 🔥 SAVE / EDIT
+        function saveEntry() {
+            document.querySelector("#writeCard button").innerText = "Saving...";
+            let text = document.getElementById('thought').value.trim();
+            let mood = document.getElementById("mood").value;
+            let file = document.getElementById("imgInput").files[0];
+            let cat = getCurrentCategory();
+
+            if (!text) return alert('Write something');
+
+            db.ref("rooms/" + room).get().then(snap => {
+                let entries = snap.val() || [];
+
+                // 🔥 EDIT MODE
+                if (editIndex !== null) {
+                    entries[editIndex].text = text;
+                    entries[editIndex].category = cat;
+                    entries[editIndex].mood = mood;
+
+                    if (file) {
+                        let reader = new FileReader();
+                        reader.onload = function () {
+                            entries[editIndex].img = reader.result;
+                            db.ref("rooms/" + room).set(entries);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        entries[editIndex].img = currentEditImg;
+                        db.ref("rooms/" + room).set(entries);
+                    }
+
+                    editIndex = null;
+                }
+
+                // 🔥 NEW ENTRY
+                else {
+                    if (file) {
+                        let reader = new FileReader();
+                        reader.onload = function () {
+                            entries.push({
+                                text,
+                                mood,
+                                img: reader.result,
+                                category: cat,
+                                fav: false,
+                                date: new Date().toLocaleString()
+                            });
+                            db.ref("rooms/" + room).set(entries);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        entries.push({
+                            text,
+                            mood,
+                            img: null,
+                            category: cat,
+                            fav: false,
+                            date: new Date().toLocaleString()
+                        });
+                        db.ref("rooms/" + room).set(entries);
+                    }
+                }
+
+                // 🔥 RESET UI
+                document.getElementById('thought').value = '';
+                document.getElementById('imgInput').value = '';
+                document.getElementById("fileName").innerText = "No file chosen";
+                currentEditImg = null;
+                document.getElementById("editImgPreview").style.display = "none";
+                document.getElementById('writeTitle').innerText = "✨ Write Your Thoughts";
+                document.querySelector("#writeCard button").innerText = "Save 💖";
+                document.getElementById("writeCard").classList.remove("editing");
+                document.getElementById("cancelBtn").style.display = "none";
+                alert("Saved 💖");
+            });
+        }
+
+        // 🔥 DELETE
+        function deleteEntry(i) {
+            if (!confirm("Delete this entry? ❌")) return;
+
+            db.ref("rooms/" + room).get().then(snap => {
+                let entries = snap.val() || [];
+                entries.splice(i, 1);
+                db.ref("rooms/" + room).set(entries);
+            });
+        }
+
+        // 🔥 EDIT
+        function editEntry(i) {
+            db.ref("rooms/" + room).get().then(snap => {
+                let entries = snap.val() || [];
+
+                document.getElementById('thought').value = entries[i].text;
+                editIndex = i;
+                document.getElementById("writeCard").classList.add("editing");
+
+                // 🔥 IMAGE HANDLE
+                currentEditImg = entries[i].img || null;
+
+                if (currentEditImg) {
+                    document.getElementById("editImgPreview").style.display = "block";
+                    document.getElementById("previewImg").src = currentEditImg;
+                } else {
+                    document.getElementById("editImgPreview").style.display = "none";
+                }
+                document.querySelector("#writeCard button").innerText = "Update 💖";
+                document.getElementById('writeTitle').innerText = "✏️ Editing Entry...";
+                document.getElementById('writeCard').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById("cancelBtn").style.display = "inline-block";
+            });
+        }
+       
+       function cancelEdit() {
+    editIndex = null;
+    currentEditImg = null;
+
+    document.getElementById('thought').value = '';
+    document.getElementById("imgInput").value = '';
+    document.getElementById("fileName").innerText = "No file chosen";
+    document.getElementById("editImgPreview").style.display = "none";
+
+    document.getElementById('writeTitle').innerText = "✨ Write Your Thoughts";
+    document.querySelector("#writeCard button").innerText = "Save 💖";
+
+    document.getElementById("writeCard").classList.remove("editing");
+    document.getElementById("cancelBtn").style.display = "none";
+}
+        function removeImage() {
+            currentEditImg = null;
+            document.getElementById("editImgPreview").style.display = "none";
+            document.getElementById("imgInput").value = "";
+            document.getElementById("fileName").innerText = "No file chosen";
+        }
+        // 🔥 FAV
+        function toggleFav(i) {
+            db.ref("rooms/" + room).get().then(snap => {
+                let entries = snap.val() || [];
+                entries[i].fav = !entries[i].fav;
+                db.ref("rooms/" + room).set(entries);
+            });
+        }
+            // 🔥 FILTER
+            function setFilter(f, el) {
+                currentFilter = f;
+
+                document.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+                el.classList.add('active');
+
+                let titles = {
+                    all: 'All Entries ✨',
+                    thought: 'My Thoughts ✍️',
+                    memory: 'My Memories 🌸',
+                    love: 'Love Notes 💌',
+                    fav: 'My Favorites 💖'
+                };
+
+                document.getElementById('sectionTitle').innerText = titles[f];
+
+                if (f === 'fav') {
+                    document.getElementById('writeCard').classList.add('hidden');
+                } else {
+                    document.getElementById('writeCard').classList.remove('hidden');
+
+                    // 🔥 FIX: correct title on section change
+                    document.getElementById('writeTitle').innerText =
+                        writeTitles[f] || writeTitles['all'];
+                }
+
+                displayEntries();
+            }
+
+            // 🔥 MENU
+            function toggleMenu() {
+                let menu = document.getElementById('navMenu');
+                menu.classList.toggle('show');
+                document.body.style.overflow =
+                    menu.classList.contains('show') ? 'hidden' : 'auto';
+            }
+
+            document.querySelectorAll('#navMenu li').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.getElementById('navMenu').classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+
+            // 🔥 DISPLAY (REALTIME)
+            function displayEntries() {
+                db.ref("rooms/" + room).off();
+
+                db.ref("rooms/" + room).on("value", snap => {
+                    let entries = snap.val() || [];
+                    if (!window.lastCount) window.lastCount = 0;
+
+                    if (entries.length > window.lastCount && window.lastCount !== 0) {
+                        if (Notification.permission === "granted") {
+                            new Notification("💖 New Diary Entry", {
+                                body: "Someone added a new memory ✨"
+                            });
+                        }
+                    }
+                    window.lastCount = entries.length;
+                    let container = document.getElementById('entries');
+                    container.innerHTML = '';
+
+                    if (entries.length === 0) {
+                        container.innerHTML =
+                            "<p style='text-align:center;color:#aaa;'>No entries yet 💭</p>";
+                        return;
+                    }
+
+                    entries.forEach((e, i) => {
+
+                        if (currentFilter === 'fav' && !e.fav) return;
+                        if (currentFilter !== 'all' && currentFilter !== 'fav' && e.category !== currentFilter) return;
+
+                        let div = document.createElement('div');
+                        div.className = 'entry';
+
+                       div.innerHTML = `
+<div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+
+    ${e.img ? `
+    <img src="${e.img}" onclick="openImage('${e.img}')"
+    style="width:55px;height:55px;border-radius:50%;object-fit:cover;
+    cursor:pointer;border:2px solid #ff4da6;flex-shrink:0;">
+    ` : ''}
+
+    <div style="flex:1;min-width:200px;">
+        <div class='date'>${e.date} • ${e.mood || ''}</div>
+        <div class='text'>${e.text}</div>
+    </div>
+
+</div>
+
+<div class='actions'>
+<button class='action-btn fav' onclick="toggleFav(${i})">
+<i class="${e.fav ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+</button>
+<button class='action-btn edit' onclick="editEntry(${i})">
+<i class="fa-solid fa-pen"></i>
+</button>
+<button class='action-btn delete' onclick="deleteEntry(${i})">
+<i class="fa-solid fa-trash"></i>
+</button>
+</div>
+`;
+
+                        container.prepend(div);
+                    });
+                });
+            }
+            function toggleRooms() {
+                let side = document.getElementById("roomSidebar");
+                side.style.left = side.style.left === "0px" ? "-260px" : "0px";
+            }
+
+            function loadRooms() {
+                let list = document.getElementById("roomList");
+                list.innerHTML = "";
+
+                rooms.forEach(r => {
+                    let div = document.createElement("div");
+                    div.style.margin = "10px 0";
+
+                    div.innerHTML = `
+<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.05);">
+
+    <span onclick="switchRoom('${r}')" 
+    style="cursor:pointer;color:#ffb3d9;font-weight:500;">
+        ${r}
+    </span>
+
+    <button onclick="deleteRoom('${r}')" 
+    style="background:none;border:none;color:#ff4d6d;cursor:pointer;font-size:14px;">
+        ❌
+    </button>
+
+</div>
+`;
+
+                    list.appendChild(div);
+                });
+            }
+
+            function switchRoom(r) {
+                room = r;
+                displayEntries();
+
+                // 🔥 sidebar auto close
+                document.getElementById("roomSidebar").style.left = "-260px";
+            }
+
+            function deleteRoom(r) {
+                rooms = rooms.filter(x => x !== r);
+                localStorage.setItem("rooms", JSON.stringify(rooms));
+                loadRooms();
+                document.getElementById("roomSidebar").style.left = "-260px";
+            }
+            window.onload = () => {
+                loadRooms();
+                displayEntries();
+                document.getElementById("imgModal").onclick = function () {
+                    this.style.display = "none";
+                };
+            };
+            function openImage(src) {
+                document.getElementById("imgModal").style.display = "flex";
+                document.getElementById("fullImg").src = src;
+            }
+
+            document.getElementById("imgInput").addEventListener("change", function () {
+                let name = this.files[0] ? this.files[0].name : "No file chosen";
+                document.getElementById("fileName").innerText = name;
+            });
+
+    </script>
+    <div id="imgModal"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center;z-index:99999;">
+
+        <img id="fullImg" style="max-width:90%;max-height:90%;border-radius:10px;">
+
+    </div>
+
+    <div id="roomSidebar"
+        style="position:fixed;left:-260px;top:0;width:260px;height:100%;background:#0f172a;padding:20px;transition:0.3s;z-index:9999;">
+        <h3>💖 Rooms</h3>
+        <div id="roomList"></div>
+    </div>
+</body>
+
+</html>
